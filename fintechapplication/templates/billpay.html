@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Bill Payments</h2>
+<form method="POST">
+    <div class="mb-3">
+        <!-- Intentional issue: id does not match locator in DB -->
+        <label for="bill-vendor-field" class="form-label">Vendor</label>
+        <input type="text" class="form-control" id="bill-vendor-field" name="bill_vendor" required>
+    </div>
+    <div class="mb-3">
+        <!-- Intentional issue: no locator in DB for this field -->
+        <label for="bill-amount-field" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="bill-amount-field" name="bill_amount" min="1" step="0.01" required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="{{ random_id }}">Pay</button>
+</form>
+{% if message %}
+<div class="alert alert-success mt-3">{{ message }}</div>
+{% endif %}
+{% endblock %} 

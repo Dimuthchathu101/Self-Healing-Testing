@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Transfer Money</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="{{ locators['recipient']['value'] }}" class="form-label">Recipient Username</label>
+        <input type="text" class="form-control" id="{{ locators['recipient']['value'] }}" name="recipient" required>
+    </div>
+    <div class="mb-3">
+        <label for="{{ locators['amount']['value'] }}" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="{{ locators['amount']['value'] }}" name="amount" min="1" step="0.01" required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="{{ locators['transfer_btn']['value'] }}">Transfer</button>
+</form>
+{% if error %}
+<div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% if success %}
+<div class="alert alert-success mt-3">{{ success }}</div>
+{% endif %}
+{% endblock %} 

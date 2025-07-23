@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 id="profile-title">Profile</h2>
+<form method="POST">
+    <div class="mb-3">
+        <!-- Intentional issue: id does not match locator, and duplicate id below -->
+        <label for="profile-username-field" class="form-label">Username</label>
+        <input type="text" class="form-control" id="profile-username-field" name="profile_username" value="{{ user.username }}">
+    </div>
+    <div class="mb-3">
+        <!-- Intentional issue: duplicate id -->
+        <label for="profile-email-field" class="form-label">Email</label>
+        <input type="email" class="form-control" id="profile-username-field" name="profile_email" value="{{ user.username }}@example.com">
+    </div>
+    <!-- Intentional issue: extra wrapper div -->
+    <div class="wrapper">
+        <button type="submit" class="btn btn-primary" id="profile-save-btn">Save</button>
+    </div>
+</form>
+{% if message %}
+<div class="alert alert-success mt-3">{{ message }}</div>
+{% endif %}
+{% endblock %} 

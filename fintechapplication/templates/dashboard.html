@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 id="{{ locators['dashboard_title']['value'] }}">Welcome, {{ username }}!</h2>
+<p>Your balance: <span id="{{ locators['balance']['value'] }}">${{ balance }}</span></p>
+<a href="/transfer" class="btn btn-success" id="{{ locators['transfer_btn']['value'] }}">Transfer Money</a>
+<a href="/transactions" class="btn btn-info" id="{{ locators['history_btn']['value'] }}">Transaction History</a>
+<a href="/logout" class="btn btn-secondary">Logout</a>
+{% if notifications %}
+<div class="notifications">
+    {% for note in notifications %}
+        <!-- Intentional issue: all notifications use the same class, and no unique id -->
+        <div class="notification alert alert-{{ note.type }}">{{ note.msg }}</div>
+    {% endfor %}
+    <!-- Intentional issue: missing locator for this message -->
+    <div class="notification alert alert-danger">Test locator issue: This message has no locator in DB.</div>
+</div>
+{% endif %}
+{% endblock %} 

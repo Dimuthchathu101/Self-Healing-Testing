@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Login</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="{{ locators['username']['value'] }}" class="form-label">Username</label>
+        <input type="text" class="form-control" id="{{ locators['username']['value'] }}" name="username" required>
+    </div>
+    <div class="mb-3">
+        <label for="{{ locators['password']['value'] }}" class="form-label">Password</label>
+        <input type="password" class="form-control" id="{{ locators['password']['value'] }}" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="{{ locators['login_btn']['value'] }}">Login</button>
+</form>
+{% if error %}
+<div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% endblock %} 
