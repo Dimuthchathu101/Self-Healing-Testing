@@ -16,14 +16,14 @@ async def test_transactions_search_selector_issue(page, locator_model):
         login_success = True
     except Exception:
         try:
-            await page.fill('#login-username', 'alice')
+            await page.fill('#login-username', 'alice2')
             await page.fill('#login-password', 'password')
             await page.click('#login-btn')
             await page.wait_for_url("**/dashboard")
             login_success = True
         except Exception:
             try:
-                await page.fill('input[type="text"]', 'alice')
+                await page.fill('input[type="text"]', 'alice2')
                 await page.fill('input[type="password"]', 'password')
                 await page.click('button:has-text("Login")')
                 await page.wait_for_url("**/dashboard")

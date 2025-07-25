@@ -4,10 +4,8 @@ from multimodal_locator import MultiModalLocator
 import asyncio
 
 @pytest.mark.asyncio
-async def test_profile_edit_selector_issue(page, locator_model=None):
-    # Use the real or mock multimodal locator
-    if locator_model is None:
-        locator_model = MultiModalLocator()  # fallback to real if not provided
+async def test_profile_edit_selector_issue(page, locator_model):
+    # Use the mock multimodal locator from the fixture
     # Login step (use login page locators)
     # Retry navigation up to 3 times with increased timeout
     for attempt in range(3):
@@ -24,21 +22,21 @@ async def test_profile_edit_selector_issue(page, locator_model=None):
         username_locator = locator_model(None, None, "login username field")
         password_locator = locator_model(None, None, "login password field")
         login_btn_locator = locator_model(None, None, "login button")
-        await page.fill(username_locator, 'alice')
+        await page.fill(username_locator, 'alice2')
         await page.fill(password_locator, 'password')
         await page.click(login_btn_locator)
         await page.wait_for_url("**/dashboard", timeout=90000)
         login_success = True
     except Exception:
         try:
-            await page.fill('#login-username', 'alice')
+            await page.fill('#login-username', 'alice2')
             await page.fill('#login-password', 'password')
             await page.click('#login-btn')
             await page.wait_for_url("**/dashboard", timeout=90000)
             login_success = True
         except Exception:
             try:
-                await page.fill('input[type="text"]', 'alice')
+                await page.fill('input[type="text"]', 'alice2')
                 await page.fill('input[type="password"]', 'password')
                 await page.click('button:has-text("Login")')
                 await page.wait_for_url("**/dashboard", timeout=90000)
