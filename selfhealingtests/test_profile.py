@@ -2,6 +2,11 @@ import pytest
 from predictive_healing import ChangePredictor
 from multimodal_locator import MultiModalLocator
 import asyncio
+from heal_element import heal_element
+from certify_healing import certify_healing
+
+# Example element for healing/certification
+element = {"name": "save button", "selector": "#profile-save-btn"}
 
 @pytest.mark.asyncio
 async def test_profile_edit_selector_issue(page, locator_model):
@@ -66,5 +71,26 @@ async def test_profile_edit_selector_issue(page, locator_model):
             await page.fill(username_locator, 'alice2')
         except Exception:
             await page.fill('input[type="text"]', 'alice2')
-    await page.click(save_btn_locator)
-    assert "Profile updated!" in await page.content() 
+    try:
+        await page.click(save_btn_locator)
+    except Exception:
+        # Use healing strategies if normal selectors fail
+        candidate = heal_element(page, element, ["VISUAL_CONTEXT", "SEMANTIC_GRAPH", "XAI_VERIFICATION"])
+        if candidate:
+            await page.click(candidate.selector)
+        else:
+            predictor = ChangePredictor(repo_path="/Users/testing/Documents/GitHub/Self-Healing-Testing")
+            risks = predictor.predict_breakages()
+            print("[Predictive Healing] At-risk elements:", risks["affected_elements"])
+            print("[Predictive Healing] Tests at risk:", risks["tests_at_risk"])
+            print("[Predictive Healing] Suggestion: Try alternative selectors for save button.")
+            page_content = await page.content()
+            print("[DEBUG] Page content after failed save attempt:\n", page_content)
+            cookies = await page.context.cookies()
+            print("[DEBUG] Cookies after failed save attempt:", cookies)
+            await page.screenshot(path="save_failure_profile_debug.png")
+            print("[DEBUG] Screenshot saved as save_failure_profile_debug.png")
+            assert False, "Save failed after all self-healing attempts. See predictive healing output above."
+    assert "Profile updated!" in await page.content()
+    # Certify healing across browsers
+    assert await certify_healing(["chrome", "firefox"])  # limit to two for demo 

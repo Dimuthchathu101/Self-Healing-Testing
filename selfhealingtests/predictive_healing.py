@@ -39,8 +39,15 @@ class ChangePredictor:
                         lines = f.readlines()
                     current_test = None
                     for line in lines:
-                        if line.strip().startswith('async def') or line.strip().startswith('def'):
-                            current_test = line.strip().split()[2].split('(')[0]
+                        stripped = line.strip()
+                        if (stripped.startswith('async def') or stripped.startswith('def')):
+                            tokens = stripped.split()
+                            if len(tokens) >= 2 and '(' in tokens[1]:
+                                current_test = tokens[1].split('(')[0]
+                            elif len(tokens) >= 3 and '(' in tokens[2]:
+                                current_test = tokens[2].split('(')[0]
+                            else:
+                                continue
                         for match in selector_regex.finditer(line):
                             selector = match.group(1)
                             if selector and current_test:
